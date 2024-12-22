@@ -8,12 +8,14 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Liste des participants!</h1>
+    <h1>Liste des évenements!</h1>
 
-    {% for participant in participants %}
-        <div class="card">
-            <h2> {{participant.name }} </h2>
-        </div>
+    {% for event in events %}
+        <a href="{{ path('detail_event', { id: event.id }) }}" class="card-link">
+            <div class="card">
+                <h2> {{event.name }} </h2>
+            </div>
+        </a>
    
     {% endfor %}
 </div>

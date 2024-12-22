@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resultat de la Distance{% endblock %}
+
+{% block body %}
+<h1>Distance entre l'évenement et l'utilisateur</h1>
+
+<p>Evenement: {{ event.name }}</p>
+<p>Ta localisation: Latitude {{ userLat }}, Longitude {{ userLon }}</p>
+<p>Distance: {{ distance }} km</p>
+
+<a href="{{ path('calculate_distance_to_event', {id: event.id}) }}">
+    <button type="submit">Calcul Encore</button>
+</a>
+{% endblock %}

@@ -9,8 +9,21 @@
 
         {% block javascripts %}
         {% endblock %}
+
+        <link rel="stylesheet" href="{{asset('css/style.css')}}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <nav>
+            <ul>
+                <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
+                <li><a href="{{ path('liste_events') }}">liste des évenements</a></li>
+                <li><a href="{{ path('liste_participants') }}">liste des particpants</a></li>
+                <li><a href="{{ path('create_event') }}">Création d'évenement</a></li>
+            
+            </ul>
+        </nav>
+         <div class="content">
+            {% block body %}{% endblock %}
+        </div>
     </body>
 </html>

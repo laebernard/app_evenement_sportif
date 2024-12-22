@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calcul la distance{% endblock %}
+
+{% block body %}
+<h1>Calcul la distance de l'évenement à l'utilisateur</h1>
+
+<p>Evenement: {{ event.name }}</p>
+<p>localisation: Latitude {{ event.locationX }}, Longitude {{ event.locationY }}</p>
+
+<form method="post">
+    <label for="lat">Ta latitude:</label>
+    <input type="text" id="lat" name="lat" required>
+
+    <label for="lon">Ta longitude:</label>
+    <input type="text" id="lon" name="lon" required>
+
+    <button type="submit">Calcul de distance</button>
+</form>
+{% endblock %}
