@@ -2,46 +2,37 @@
 
 namespace App\Entity;
 
-use App\Repository\EventRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: EventRepository::class)]
-class Event
+#[ORM\Entity(repositoryClass: ParticipantRepository::class)]
+class Participant
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+
     /**
     * @Assert\NotBlank(message="Le nom ne peut pas être vide.")
     * @Assert\Length(
-    * min=3,
-    * max=100,
+    * min=2,
+    * max=50,
     * minMessage="Le nom doit comporter au moins {{ limit }} caractères.",
     * maxMessage="Le nom ne peut pas dépasser {{ limit }} caractères."
     * )
     */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 50)]
     private ?string $name = null;
 
     /**
-    * @Assert\NotBlank(message="La date ne peut pas être vide.")
+    * @Assert\NotBlank(message="L'email est requis.")
+    * @Assert\Email(message="Veuillez fournir un email valide.")
     */
-    /**
-     * @var \DateTime
-     * @Assert\NotBlank(message="La date de l'événement est obligatoire.")
-     * @Assert\GreaterThanOrEqual(
-     *     value="today",
-     *     message="La date de l'événement ne peut pas être dans le passé."
-     * )
-     */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
 
     /**
     * @Assert\NotBlank(message="La localisation ne peut pas être vide.")
@@ -59,16 +50,8 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $ville = null;
 
-    /**
-     * @var Collection<int, Participant>
-     */
-    #[ORM\OneToMany(targetEntity: Participant::class, mappedBy: 'event')]
-    private Collection $participants;
-
-    public function __construct()
-    {
-        $this->participants = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'participants')]
+    private ?Event $event = null;
 
     public function getId(): ?int
     {
@@ -87,14 +70,14 @@ class Event
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getEmail(): ?string
     {
-        return $this->date;
+        return $this->email;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setEmail(string $email): static
     {
-        $this->date = $date;
+        $this->email = $email;
 
         return $this;
     }
@@ -135,32 +118,14 @@ class Event
         return $this;
     }
 
-    /**
-     * @return Collection<int, Participant>
-     */
-    public function getParticipants(): Collection
+    public function getEvent(): ?Event
     {
-        return $this->participants;
+        return $this->event;
     }
 
-    public function addParticipant(Participant $participant): static
+    public function setEvent(?Event $event): static
     {
-        if (!$this->participants->contains($participant)) {
-            $this->participants->add($participant);
-            $participant->setEvent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipant(Participant $participant): static
-    {
-        if ($this->participants->removeElement($participant)) {
-            // set the owning side to null (unless already changed)
-            if ($participant->getEvent() === $this) {
-                $participant->setEvent(null);
-            }
-        }
+        $this->event = $event;
 
         return $this;
     }
