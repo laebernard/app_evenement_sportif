@@ -2,22 +2,31 @@
 
 namespace App\Repository;
 
-use App\Entity\Particpant;
+use App\Entity\Participant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Particpant>
+ * @extends ServiceEntityRepository<Participant>
  */
-class ParticpantRepository extends ServiceEntityRepository
+class ParticipantRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Particpant::class);
+        parent::__construct($registry, Participant::class);
+    }
+
+    public function findDistinctParticipants()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.name')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
-    //     * @return Particpant[] Returns an array of Particpant objects
+    //     * @return Participant[] Returns an array of Participant objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +40,7 @@ class ParticpantRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Particpant
+    //    public function findOneBySomeField($value): ?Participant
     //    {
     //        return $this->createQueryBuilder('p')
     //            ->andWhere('p.exampleField = :val')
